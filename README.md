@@ -1,6 +1,7 @@
 # 🍑 Peach Cash
 
 Aplicación móvil desarrollada en **React Native CLI**
+
 Peach Cash ofrece una experiencia simple e intuitiva para explorar el mundo cripto y manejar balances personales.
 
 ## 📱 Descripción
@@ -69,3 +70,11 @@ yarn ios
 ```
 
 (asegurarse de tener un simulador abierto o un dispositivo conectado)
+
+### Wallets
+
+En la carpeta qr-wallets se encuentran los QR para probar el flujo del scanner.
+
+### Developer Tools
+
+Desde el Inicio, haciendo tap en el Avatar la app los va a redireccionar al AccountScreen. Desde ahi en la esquina superior derecha van a ver el botón para ir a las Developer Tools donde van a poder reiniciar algunos estados.

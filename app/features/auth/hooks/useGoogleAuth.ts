@@ -1,4 +1,3 @@
-// features/auth/useGoogleAuth.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import {
@@ -45,7 +44,6 @@ export const useGoogleAuth = () => {
 
       await queryClient.clear();
     } catch (error) {
-      console.error('Sign out error:', error);
       clearCurrentUser();
     }
   };

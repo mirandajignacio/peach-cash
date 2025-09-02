@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { AppStackParamList } from '../../../components/AppStackNavigation';
@@ -25,6 +25,8 @@ import { BackButtonBase } from '../../../components/BackButtonBase';
 import { HeaderScreenBase } from '../../../components/HeaderScreenBase';
 import { QueryRender } from '../../../components/QueryRender';
 import { Asset } from '../../../storage/assets-storage';
+import { AnimatedFlashList } from '../../../components/AnimatedFlashList';
+import { AssetItem } from '../components/Assettem';
 
 type ExchangeToScreenNavigationProp = StackNavigationProp<
   AppStackParamList,
@@ -106,8 +108,7 @@ const ExchangeToCrypto = () => {
         onData={data => (
           <CryptoListList data={data} onPressCryptoCard={onPressCryptoCard} />
         )}
-        onError={error => {
-          console.error('Error cargando criptomonedas:', error);
+        onError={() => {
           return (
             <Typography variant="body1">
               Error cargando criptomonedas
@@ -164,7 +165,7 @@ const ExchangeToFiatStyles = (theme: Theme) =>
   });
 
 const ExchangeToFiat = () => {
-  const { setTo } = useExchangeStore();
+  const { setTo, to } = useExchangeStore();
   const { theme } = useTheme();
   const styles = ExchangeToFiatStyles(theme);
   const navigation = useNavigation<ExchangeToScreenNavigationProp>();
@@ -175,26 +176,17 @@ const ExchangeToFiat = () => {
   };
   return (
     <View style={styles.content}>
-      <Typography variant="body1" style={styles.subtitle}>
-        Monedas fiat disponibles
-      </Typography>
-
-      {AVAILABLE_FIATS.map(fiat => (
-        <TouchableOpacity
-          key={fiat.id}
-          style={[styles.fiatOption]}
-          onPress={() => onPressFiatOption(fiat)}
-        >
-          <View style={styles.fiatInfo}>
-            <Typography variant="h3" style={styles.fiatSymbol}>
-              {fiat.symbol}
-            </Typography>
-            <Typography variant="body2" style={styles.fiatName}>
-              {fiat.name}
-            </Typography>
-          </View>
-        </TouchableOpacity>
-      ))}
+      <AnimatedFlashList
+        data={AVAILABLE_FIATS}
+        renderItem={(asset, index) => (
+          <AssetItem
+            asset={asset}
+            index={index}
+            highlight={asset.id === to.id}
+            onPress={onPressFiatOption}
+          />
+        )}
+      />
     </View>
   );
 };

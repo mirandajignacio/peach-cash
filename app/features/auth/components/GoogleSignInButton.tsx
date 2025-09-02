@@ -1,7 +1,14 @@
 import React, { useEffect, useRef } from 'react';
-import { StyleSheet, ActivityIndicator, View, Animated } from 'react-native';
-import { useTheme } from '../../../theme';
+import {
+  StyleSheet,
+  ActivityIndicator,
+  View,
+  Animated,
+  Image,
+} from 'react-native';
+import { Theme, useTheme } from '../../../theme';
 import { Button } from '../../../components/Button';
+import { Typography } from '../../../components/Typography';
 
 interface GoogleSignInButtonProps {
   onPress: () => void;
@@ -16,7 +23,7 @@ const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
 }) => {
   const { theme } = useTheme();
   const pulseAnim = useRef(new Animated.Value(1)).current;
-
+  const styles = GoogleSignInButtonStyles(theme);
   useEffect(() => {
     if (loading) {
       const pulse = Animated.loop(
@@ -73,14 +80,20 @@ const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
   return (
     <View style={styles.content}>
       <Button
-        variant="contained"
+        variant="text"
         onPress={onPress}
         color="primary"
+        size="large"
         fullWidth
         disabled={disabled || loading}
         activeOpacity={0.8}
+        style={styles.button}
       >
-        {loading ? 'Iniciando sesión...' : 'COMENZAR'}
+        <Image
+          source={require('../../../assets/images/google-g.png')}
+          style={styles.logo}
+        />
+        <Typography variant="body1">Continuar con Google</Typography>
       </Button>
       {loading && (
         <ActivityIndicator
@@ -93,49 +106,59 @@ const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    borderRadius: 12,
-    borderWidth: 1,
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    marginVertical: 8,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
+const GoogleSignInButtonStyles = (theme: Theme) =>
+  StyleSheet.create({
+    logo: {
+      width: 24,
+      height: 24,
     },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-  },
-  disabled: {
-    opacity: 0.6,
-  },
-  content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loader: {
-    marginLeft: 8,
-  },
-  skeletonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  skeletonIcon: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    marginRight: 12,
-  },
-  skeletonText: {
-    height: 20,
-    width: 140,
-    borderRadius: 4,
-  },
-});
+    button: {
+      backgroundColor: theme.colors.surface,
+      gap: theme.spacing.sm,
+      borderRadius: 12,
+      borderWidth: 1,
+      paddingVertical: 16,
+      paddingHorizontal: 20,
+      marginVertical: 8,
+      elevation: 2,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.1,
+      shadowRadius: 3.84,
+    },
+    disabled: {
+      opacity: 0.6,
+    },
+    content: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+
+    loader: {
+      marginLeft: 8,
+    },
+
+    skeletonContent: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+
+    skeletonIcon: {
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      marginRight: 12,
+    },
+    skeletonText: {
+      height: 20,
+      width: 140,
+      borderRadius: 4,
+    },
+  });
 
 export default GoogleSignInButton;

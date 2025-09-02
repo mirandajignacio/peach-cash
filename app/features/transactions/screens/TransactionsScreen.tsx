@@ -34,8 +34,8 @@ const TransactionsScreen = () => {
               )}
             />
           )}
-          onLoading={() => <>{`...`} </>}
-          onError={() => <>{`...`} </>}
+          onLoading={() => <Typography variant="body1">{`...`} </Typography>}
+          onError={() => <Typography variant="body1">{`...`} </Typography>}
         />
       </ScreenContent>
     </ScreenView>

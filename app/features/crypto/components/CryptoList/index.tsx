@@ -47,8 +47,7 @@ const CryptoList = ({
         onData={data => (
           <CryptoListList data={data} onPressCryptoCard={onPressCryptoCard} />
         )}
-        onError={error => {
-          console.error('Error cargando criptomonedas:', error);
+        onError={() => {
           return (
             <Typography variant="body1">
               Error cargando criptomonedas

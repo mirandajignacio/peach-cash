@@ -1,15 +1,14 @@
-// Incluir información relevante: nombre, símbolo, imagen, precio actual y variación porcentual en 24hs.
-
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { View, TouchableOpacity, Animated } from 'react-native';
 import { Typography } from '../../../components/Typography';
-import { Theme, useTheme } from '../../../theme';
+import { useTheme } from '../../../theme';
 
 import { BalanceView } from '../../../services/balance-service';
 import {
   formatCryptoAmount,
   formatFiatAmount,
 } from '../../../utils/numberFormatter';
+import { AssetItemStyles } from './Assettem';
 
 interface AssetBalanceItemProps {
   balance: BalanceView;
@@ -18,61 +17,6 @@ interface AssetBalanceItemProps {
   highlight?: boolean;
 }
 
-const AssetBalanceItemStyles = (theme: Theme, highlight: boolean) =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: theme.colors.surface,
-      borderRadius: 12,
-      padding: theme.spacing.md,
-      marginVertical: theme.spacing.xs,
-      borderWidth: 1,
-      borderColor: highlight ? theme.colors.primary : theme.colors.border,
-    },
-    cryptoImage: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      marginRight: theme.spacing.md,
-    },
-    cryptoInfo: {
-      flex: 1,
-    },
-    cryptoHeader: {
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      marginBottom: theme.spacing.xs,
-    },
-    symbolContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: theme.spacing.xs,
-    },
-    symbolBadge: {
-      backgroundColor: theme.colors.surfaceSecondary,
-      paddingHorizontal: theme.spacing.xs,
-      paddingVertical: 2,
-      borderRadius: 6,
-    },
-    priceContainer: {
-      alignItems: 'flex-end',
-    },
-    priceText: {
-      marginBottom: theme.spacing.xs,
-    },
-    changeContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: theme.spacing.xs,
-      paddingVertical: 4,
-      borderRadius: 6,
-    },
-    changeText: {
-      fontWeight: '600',
-    },
-  });
-
 const AssetBalanceItem: React.FC<AssetBalanceItemProps> = ({
   balance,
   onPress,
@@ -80,7 +24,7 @@ const AssetBalanceItem: React.FC<AssetBalanceItemProps> = ({
   highlight = false,
 }) => {
   const { theme } = useTheme();
-  const styles = AssetBalanceItemStyles(theme, highlight);
+  const styles = AssetItemStyles(theme, highlight);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
 
@@ -115,7 +59,6 @@ const AssetBalanceItem: React.FC<AssetBalanceItemProps> = ({
         onPress={() => onPress?.(balance)}
         activeOpacity={0.7}
       >
-        {/* Información de la balance */}
         <View style={styles.cryptoInfo}>
           <View style={styles.cryptoHeader}>
             <View style={styles.symbolContainer}>
@@ -132,7 +75,6 @@ const AssetBalanceItem: React.FC<AssetBalanceItemProps> = ({
           </View>
         </View>
 
-        {/* Precio y variación */}
         <View style={styles.priceContainer}>
           <Typography variant="subtitle1" color="text" style={styles.priceText}>
             {balance.asset.type === 'fiat'

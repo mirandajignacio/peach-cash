@@ -24,7 +24,7 @@ const BalanceSection = () => {
 
       <QueryRender
         query={balanceQuery}
-        onLoading={() => <>{`...`} </>}
+        onLoading={() => <Typography variant="body1">{`...`} </Typography>}
         onData={data => {
           return (
             <Typography

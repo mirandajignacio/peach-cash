@@ -74,16 +74,15 @@ function SignInScreen() {
 const SignInScreenStyles = () =>
   StyleSheet.create({
     logo: {
-      width: 200,
-      height: 200,
+      width: 120,
+      height: 120,
       padding: 16,
       objectFit: 'contain',
       marginHorizontal: 'auto',
-      // marginTop: 64,
     },
     container: {
       flex: 1,
-      justifyContent: 'space-between',
+      justifyContent: 'center',
     },
     header: {
       alignItems: 'center',

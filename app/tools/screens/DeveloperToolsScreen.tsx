@@ -41,7 +41,8 @@ const DeveloperToolsScreen = () => {
       return await balanceService.resetBalances();
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['balance'] });
+      await queryClient.invalidateQueries({ queryKey: ['balances'] });
+      await queryClient.invalidateQueries({ queryKey: ['total-balance'] });
       Toast.show({
         type: 'success',
         text1: 'Storage reseteado',
@@ -89,8 +90,7 @@ const DeveloperToolsScreen = () => {
         text1: 'Queries reseteadas',
         text2: 'Las queries se han reiniciado',
       });
-    } catch (error) {
-      console.error('Error al resetear las queries', error);
+    } catch {
       Toast.show({
         type: 'error',
         text1: 'Error al resetear las queries',

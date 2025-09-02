@@ -76,7 +76,6 @@ export const VisionCameraScanner: React.FC<VisionCameraScannerProps> = ({
     try {
       await Linking.openSettings();
     } catch (error) {
-      console.error('Error opening settings:', error);
       Alert.alert('Error', 'No se pudo abrir la configuración');
     }
   }, []);
@@ -97,7 +96,6 @@ export const VisionCameraScanner: React.FC<VisionCameraScannerProps> = ({
         );
       }
     } catch (error) {
-      console.error('Error requesting camera permission:', error);
       Alert.alert('Error', 'Ocurrió un error al solicitar permisos de cámara');
     } finally {
       setIsRequestingPermission(false);

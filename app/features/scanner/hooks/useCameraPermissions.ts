@@ -59,7 +59,6 @@ export const useCameraPermissions = (): CameraPermissionState => {
           setStatus('denied');
       }
     } catch (error) {
-      console.error('Error checking camera permission:', error);
       setStatus('denied');
     }
   };

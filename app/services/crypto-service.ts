@@ -132,7 +132,6 @@ const cryptoService = {
       return validatedData;
     } catch (error) {
       if (error instanceof z.ZodError) {
-        console.error('Validation error:', error.issues);
         throw new Error('Invalid data structure received from API');
       }
       throw error;
