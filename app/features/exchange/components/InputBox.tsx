@@ -4,7 +4,6 @@ import { Typography } from '../../../components/Typography';
 import { Theme, useTheme } from '../../../theme';
 import { TextInput } from 'react-native-gesture-handler';
 import { useExchangeStore } from '../stores/exchangeStore';
-import { exchangeService } from '../../../services/exchangee-service';
 import { ExchangeModeOptios } from '../stores/exchangeStore';
 import { useNavigation } from '@react-navigation/native';
 import { AppStackParamList } from '../../../components/AppStackNavigation';
@@ -12,6 +11,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { BalanceIndicator } from './BalanceIndicator';
 import { AssetButtonChip } from './AssetButtonChip';
 import { MaxButtonChip } from './MaxButtonChip';
+import { exchangeServiceV2 } from '../../../services/exchange-service';
 
 type ExchangeFromScreenNavigationProp = StackNavigationProp<
   AppStackParamList,
@@ -39,7 +39,11 @@ export const InputBox = () => {
         mode === ExchangeModeOptios.FIAT_TO_CRYPTO ? to.id : from.id;
       const fiat = mode === ExchangeModeOptios.FIAT_TO_CRYPTO ? from.id : to.id;
       try {
-        const rate = await exchangeService.getExchangeRate(mode, crypto, fiat);
+        const rate = await exchangeServiceV2.getExchangeRate(
+          mode,
+          crypto,
+          fiat,
+        );
         setRate(rate);
       } catch {
         // workaround to avoid CoinGecko rate error
