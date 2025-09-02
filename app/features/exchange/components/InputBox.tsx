@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Typography } from '../../../components/Typography';
 import { Theme, useTheme } from '../../../theme';
@@ -12,6 +12,8 @@ import { BalanceIndicator } from './BalanceIndicator';
 import { AssetButtonChip } from './AssetButtonChip';
 import { MaxButtonChip } from './MaxButtonChip';
 import { exchangeServiceV2 } from '../../../services/exchange-service';
+import { useDebounce } from '../../../hooks/useDebounce';
+import { normalizeAmount } from '../utils';
 
 type ExchangeFromScreenNavigationProp = StackNavigationProp<
   AppStackParamList,
@@ -25,8 +27,28 @@ export const InputBox = () => {
 
   const styles = InputBoxStyles(theme);
 
+  const [inputText, setInputText] = useState(amount.toString());
+
+  const debouncedInputText = useDebounce(inputText, 300);
+
+  useEffect(() => {
+    if (debouncedInputText !== '') {
+      const normalizedText = normalizeAmount(debouncedInputText);
+      const numericValue = Number(normalizedText);
+      if (!isNaN(numericValue)) {
+        setAmount(numericValue);
+      }
+    } else {
+      setAmount(0);
+    }
+  }, [debouncedInputText, setAmount]);
+
+  useEffect(() => {
+    setInputText(amount.toString());
+  }, [amount]);
+
   const onHandleAmountChange = (text: string) => {
-    setAmount(Number(text));
+    setInputText(normalizeAmount(text));
   };
 
   const onPressAssest = () => {
@@ -64,7 +86,6 @@ export const InputBox = () => {
         />
       </View>
 
-      {/* <View style={styles.amountContainer}> */}
       <TextInput
         style={styles.input}
         placeholder={'0.00'}
@@ -76,14 +97,13 @@ export const InputBox = () => {
         autoCapitalize="none"
         autoCorrect={false}
         autoComplete="off"
-        value={amount.toString()}
+        value={inputText}
         showSoftInputOnFocus={false}
         inputMode="decimal"
         keyboardType="numbers-and-punctuation"
         onChangeText={onHandleAmountChange}
         submitBehavior="blurAndSubmit"
       />
-      {/* </View> */}
 
       <View style={styles.footer}>
         <BalanceIndicator />
